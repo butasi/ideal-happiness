@@ -49,7 +49,7 @@ beautiful.init(gears.filesystem.get_themes_dir() .. "default/theme.lua")
 
 -- This is used later as the default terminal and editor to run.
 terminal = "konsole"
-editor = os.getenv("EDITOR") or "nano"
+editor = os.getenv("EDITOR") or "vim"
 editor_cmd = terminal .. " -e " .. editor
 
 -- Default modkey.
@@ -371,7 +371,8 @@ globalkeys = gears.table.join(
               end,
               {description = "lua execute prompt", group = "awesome"}),
     -- Menubar
-    awful.key({modkey}, 'd', function() awful.util.spawn('rofi -show drun -font "hack 10" -show combi -icon-theme "Papirus" -show-icons' ) end, {description='run rofi', group='launcher'})
+    awful.key({modkey}, 'd', function() awful.util.spawn('rofi -show drun -font "hack 10"  -icon-theme "Papirus" -show-icons' ) end,
+    {description='run rofi', group='launcher'})
 )
 
 clientkeys = gears.table.join(
