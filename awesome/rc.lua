@@ -18,10 +18,6 @@ local hotkeys_popup = require("awful.hotkeys_popup")
 -- when client with a matching name is opened:
 require("awful.hotkeys_popup.keys")
 
-local away = require("away")
-require('module.auto-start')
-
-
 -- {{{ Error handling
 -- Check if awesome encountered an error during startup and fell back to
 -- another config (This code will only ever execute for the fallback config)
@@ -179,7 +175,7 @@ local function set_wallpaper(s)
         if type(wallpaper) == "function" then
             wallpaper = wallpaper(s)
         end
-  --      gears.wallpaper.maximized(wallpaper, s, true)
+        gears.wallpaper.maximized(wallpaper, s, true)
     end
 end
 
@@ -232,7 +228,6 @@ awful.screen.connect_for_each_screen(function(s)
         s.mytasklist, -- Middle widget
         { -- Right widgets
             layout = wibox.layout.fixed.horizontal,
-            
             net_speed_widget(),
             cpu_widget({
             width = 70,
@@ -325,15 +320,11 @@ globalkeys = gears.table.join(
         {description = "go back", group = "client"}),
 
     -- Standard program
-    
-     awful.key({ modkey,  }, "f", function () awful.spawn(firefox) end,
-              {description = "open a firefox", group = "awesome"}),
-    
     awful.key({ modkey,           }, "Return", function () awful.spawn(terminal) end,
               {description = "open a terminal", group = "launcher"}),
     awful.key({ modkey, "Control" }, "r", awesome.restart,
               {description = "reload awesome", group = "awesome"}),
-    awful.key({ modkey, "Shift"   }, "-", awesome.quit,
+    awful.key({ modkey,  "Shift" }, "q", awesome.quit,
               {description = "quit awesome", group = "awesome"}),
 
     awful.key({ modkey,           }, "l",     function () awful.tag.incmwfact( 0.05)          end,
@@ -380,8 +371,7 @@ globalkeys = gears.table.join(
               end,
               {description = "lua execute prompt", group = "awesome"}),
     -- Menubar
-    awful.key({ modkey }, "d", function() menubar.show() end,
-              {description = "show the menubar", group = "launcher"})
+    awful.key({modkey}, 'd', function() awful.util.spawn('rofi -show drun -font "hack 10" -show combi -icon-theme "Papirus" -show-icons' ) end, {description='run rofi', group='launcher'})
 )
 
 clientkeys = gears.table.join(
@@ -391,7 +381,7 @@ clientkeys = gears.table.join(
             c:raise()
         end,
         {description = "toggle fullscreen", group = "client"}),
-    awful.key({ modkey,  }, "c",      function (c) c:kill()                         end,
+    awful.key({ modkey,   }, "c",      function (c) c:kill()                         end,
               {description = "close", group = "client"}),
     awful.key({ modkey, "Control" }, "space",  awful.client.floating.toggle                     ,
               {description = "toggle floating", group = "client"}),
@@ -528,7 +518,6 @@ awful.rules.rules = {
           "Sxiv",
           "Tor Browser", -- Needs a fixed window size to avoid fingerprinting by screen size.
           "Wpa_gui",
-          "veromix",
           "xtightvncviewer"},
 
         -- Note that the name property shown in xprop might be set slightly after creation of the client
@@ -549,8 +538,8 @@ awful.rules.rules = {
     },
 
     -- Set Firefox to always map on the tag named "2" on screen 1.
-    { rule = { class = "Firefox" },
-       properties = { screen = 1, tag = "2" } },
+    -- { rule = { class = "Firefox" },
+    --   properties = { screen = 1, tag = "2" } },
 }
 -- }}}
 
@@ -613,6 +602,7 @@ end)
 client.connect_signal("mouse::enter", function(c)
     c:emit_signal("request::activate", "mouse_enter", {raise = false})
 end)
+
 awful.spawn.with_shell("~/.config/awesome/button.sh")
 client.connect_signal("focus", function(c) c.border_color = beautiful.border_focus end)
 client.connect_signal("unfocus", function(c) c.border_color = beautiful.border_normal end)
