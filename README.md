@@ -1,2 +1,2 @@
 # ideal-happiness
-dotfiles
+dotfiles for Archlinux and Awesomewm setup
